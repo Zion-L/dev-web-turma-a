@@ -18,7 +18,7 @@ export default {
     data() {
         return {
            
-                nombre: 'Gabriel Dantas',
+                nome: 'Gabriel Dantas',
                 email: 'gabriel.dantas@example.com',
                 isBrasaCampeao: false,
                 urlImg: "https://ds-images.bolavip.com/news/image/740/416/?src=https://images.bolavip.com/webp/br/full/BBR_20241016_BBR_1002443_Selecao-Brasileira-2-2-scaled-e1729102666338.webp" 
