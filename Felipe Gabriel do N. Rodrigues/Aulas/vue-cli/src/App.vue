@@ -7,9 +7,14 @@
     <br>
     <home-component />
     <br>
-    <usuario-component />
+    <usuario-component v-show="isUsuarioVisivel"/>
     <br>
     <estilo-component />
+    <br>
+    <imagem-component
+      @visibilidadeImg="escutarVisibilidadeImg"
+      larguraImg=200
+      urlImg="https://img.freepik.com/fotos-gratis/homem-sendo-vitorioso-junto-ao-mar_23-2148739337.jpg" />
   </div>
 
 </template>
@@ -19,6 +24,7 @@
 import EstiloComponent from './components/EstiloComponent.vue';
 import HomeComponent from './components/HomeComponent.vue';
 import UsuarioComponent from './components/UsuarioComponent.vue';
+import ImagemComponent from './components/ImagemComponent.vue';
 
 export default {
   name: 'App',
@@ -26,7 +32,19 @@ export default {
     HomeComponent,
     UsuarioComponent,
     EstiloComponent,
+    ImagemComponent,
   },
+  data() {
+    return{
+      isUsuarioVisivel : false,
+    };
+  },
+methods: {
+  escutarVisibilidadeImg(isImgComponetVisivel) {
+    this.isUsuarioVisivel = !isImgComponetVisivel;
+  },
+},
+
   created() {
     console.log("created");
   },
