@@ -21,7 +21,7 @@ h1 {
 }
 
 .subtitulo{
-    color: rgb(255, 145, 0);
+    color: rgb(255, 145, 0);    
 
     text-align: center;
 }
