@@ -1,13 +1,13 @@
 <template>
-    <div id="main-banner">
-        <h1>Hamburguer de churrasqueiro</h1>
-    </div>
+  <div id="main-banner">
+    <h1>Hamburguer de churrasqueiro</h1>
+  </div>
 </template>
 
 <script>
 
 export default {
-    name: "BannerComponent",
+    name: 'BannerComponent',
 }
 
 </script>
