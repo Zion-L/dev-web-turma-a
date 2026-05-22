@@ -11,6 +11,7 @@ import PedidoComponentVue from '@/components/PedidoComponent.vue';
         name: 'ConfiguracaoPedidoView',
         components: 
         { PedidoComponentVue,
+            
          },
         data() {
             return {
