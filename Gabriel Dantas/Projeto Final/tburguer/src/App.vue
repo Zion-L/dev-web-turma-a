@@ -1,11 +1,21 @@
 <template>
-  <nav>
-    <router-link to="/">Menu</router-link> |
-    <router-link to="/pedidos">Pedidos</router-link>
-  </nav>
-  <router-view/>
+  <div>
+    <NavBarComponent />
+    <BannerComponent />
+    <router-view />
+  </div>
 </template>
-
+<script>
+import NavBarComponent from "./components/NavBarComponent.vue";
+import BannerComponent from "./components/BannerComponent.vue";
+export default {
+  name: "App",
+  components: {
+    NavBarComponent,
+    BannerComponent,
+  },
+};
+</script>
 <style>
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
@@ -21,10 +31,10 @@ nav {
 
 nav a {
   font-weight: bold;
-  color: #089c95;
+  color: #2c3e50;
 }
 
 nav a.router-link-exact-active {
-  color: #03534f;
+  color: #42b983;
 }
 </style>

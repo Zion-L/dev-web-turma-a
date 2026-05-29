@@ -1,13 +1,16 @@
 <template>
-    <div>
-        <h1>Pedidos</h1>
-        <p>Lista de pedidos</p>
-    </div>
+  <div>
+    <h1>Pedidos</h1>
+    <ListaPedidoComponent />
+  </div>
 </template>
 <script>
+import ListaPedidoComponent from "../components/ListaPedidoComponent.vue";
 export default {
-    name: 'PedidosView',
+  name: "PedidosView",
+  components: {
+    ListaPedidoComponent,
+  },
 };
-
 </script>
 <style scoped></style>
