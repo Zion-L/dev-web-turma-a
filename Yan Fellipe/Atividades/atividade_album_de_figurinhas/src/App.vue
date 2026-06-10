@@ -3,7 +3,7 @@
 
     <nav class="navbar">
       <div class="navbar-logo">
-        🌐 Coleção Virtual
+        ⚽ FutebolApp
       </div>
       <div class="navbar-links">
         <router-link to="/">🏠 Início</router-link>
@@ -19,12 +19,11 @@
 <script>
 export default {
   name: 'App'
-  
 }
 </script>
 
 <style>
-
+/* Reset básico */
 * {
   box-sizing: border-box;
   margin: 0;
@@ -32,25 +31,24 @@ export default {
 }
 
 body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background-color: #f8fafc; /* Fundo alinhado com o componente do Álbum */
+  font-family: 'Segoe UI', Arial, sans-serif;
+  background-color: #f1f5f9; 
 }
 
-
+/* ===== NAVBAR ===== */
 .navbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: linear-gradient(135deg, #0f172a, #1e293b); /* Azul escuro premium */
+  background-color: #0f172a; 
   padding: 15px 30px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
 }
 
 .navbar-logo {
   font-size: 22px;
-  font-weight: 800;
-  color: #fbbf24; 
-  letter-spacing: 1px;
+  font-weight: bold;
+  color: white;
 }
 
 .navbar-links {
@@ -59,23 +57,22 @@ body {
 }
 
 .navbar-links a {
-  color: #f8fafc;
+  color: white;
   text-decoration: none;
   font-size: 16px;
-  font-weight: 600;
+  font-weight: bold;
   padding: 8px 16px;
   border-radius: 8px;
-  transition: all 0.3s ease;
+  transition: background-color 0.3s;
 }
 
 .navbar-links a:hover {
-  background-color: rgba(255, 255, 255, 0.1);
-  transform: translateY(-2px);
+  background-color: rgba(255, 255, 255, 0.2);
 }
 
 
 .navbar-links a.router-link-exact-active {
-  background-color: #fbbf24;
+  background-color: white;
   color: #0f172a;
 }
 </style>

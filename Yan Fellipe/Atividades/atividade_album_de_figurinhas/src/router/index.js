@@ -3,13 +3,11 @@ import { createRouter, createWebHistory } from 'vue-router'
 import AlbumComponent from '@/components/AlbumComponent.vue'
 
 const routes = [
-  
   {
     path: '/',
     name: 'home',
     component: AlbumComponent
   },
-  
   {
     path: '/album',
     name: 'album',

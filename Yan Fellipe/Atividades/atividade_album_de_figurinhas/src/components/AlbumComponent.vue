@@ -1,300 +1,298 @@
+Snippet de código
 <template>
-  <div class="album-container">
-    
-    <header class="album-header">
-      <h1>🏆 Álbum Virtual de Seleções</h1>
-      <h2>Explore o plantel oficial de cada nação</h2>
-    </header>
+  <div class="pagina-figurinhas">
 
-    <main>
-      <section class="controls-section">
-        <label for="country-picker">Selecione a Nação:</label>
-        <select id="country-picker" v-model="selecaoAtual" @change="buscarElenco">
-          <option value="" disabled>-- Selecione --</option>
-          <option v-for="(item, index) in paisesDisponiveis" :key="index" :value="item.name">
-            {{ item.name }}
-          </option>
-        </select>
-      </section>
+    <div class="cabecalho">
+      <h1>Álbum de Figurinhas</h1>
+      <p>Selecione um país para ver os jogadores da seleção</p>
+    </div>
 
-      <section class="feedback-section">
-        <div v-if="isLoading" class="alert info">
-          🔄 Conectando aos servidores da API-Sports...
-        </div>
-        
-        <div v-if="erroAPI" class="alert danger">
-          ⚠️ {{ erroAPI }}
-        </div>
-        
-        <div v-if="!isLoading && selecaoAtual && elenco.length === 0 && !erroAPI" class="alert warning">
-          Nenhum atleta encontrado para a seleção atual.
-        </div>
-      </section>
+    <div class="selecao-pais">
+      <label for="dropdown-pais">🌍 País:</label>
+      <select id="dropdown-pais" v-model="selecaoEscolhida" @change="buscarElenco">
+        <option value="">-- Escolha um país --</option>
+        <option v-for="item in paisesDisponiveis" :key="item.name" :value="item.name">
+          {{ item.name }}
+        </option>
+      </select>
+    </div>
 
-      <section v-if="elenco.length > 0 && !isLoading" class="cards-grid">
-        <article class="player-card" v-for="atleta in elenco" :key="atleta.id">
-          
-          <div class="card-image-wrapper">
-            <img :src="atleta.photo" :alt="atleta.name" @error="imagemFallback($event, atleta.name)" />
-            <span class="player-number">{{ atleta.number ? atleta.number : '-' }}</span>
-          </div>
-          
-          <div class="card-details">
-            <h3 class="player-name">{{ atleta.name }}</h3>
-            <p class="player-position">{{ atleta.position }}</p>
-          </div>
-          
-        </article>
-      </section>
-    </main>
+    <div v-if="estaCarregando" class="mensagem-carregando">
+      <p>⏳ Buscando jogadores...</p>
+    </div>
+
+    <div v-if="erroAtual" class="mensagem-erro">
+      <p>{{ erroAtual }}</p>
+    </div>
+
+    <div v-if="!estaCarregando && selecaoEscolhida && elenco.length === 0 && !erroAtual" class="mensagem-vazia">
+      <p>Nenhum jogador encontrado para este país.</p>
+    </div>
+
+    <div v-if="elenco.length > 0" class="grid-figurinhas">
+      <div class="figurinha" v-for="atleta in elenco" :key="atleta.id">
+        <div class="figurinha-header">
+          <span class="posicao">{{ atleta.position }}</span>
+        </div>
+        <div class="figurinha-foto">
+          <img :src="atleta.photo" :alt="atleta.name" @error="imagemAlternativa" />
+        </div>
+        <div class="figurinha-info">
+          <p class="nome-jogador">{{ atleta.name }}</p>
+          <p class="numero-jogador">#{{ atleta.number || '?' }}</p>
+        </div>
+      </div>
+    </div>
 
   </div>
 </template>
 
 <script>
-
-const API_KEY = 'd31b64836034ee4a236746de3dc2f640';
+const CHAVE_API = 'd31b64836034ee4a236746de3dc2f640'
 
 export default {
-  name: 'CopaAlbum',
+  name: 'AlbumComponent',
 
   data() {
     return {
       paisesDisponiveis: [],
-      selecaoAtual: '',
+      selecaoEscolhida: '',
       elenco: [],
-      isLoading: false,
-      erroAPI: null
-    };
+      estaCarregando: false,
+      erroAtual: null,
+    }
   },
 
-  async mounted() {
-    await this.buscarPaises();
+  mounted() {
+    this.obterPaises()
   },
 
   methods: {
-    
-    async buscarPaises() {
+    async obterPaises() {
+      const opcoesFetch = {
+        method: 'GET',
+        headers: { 'x-apisports-key': CHAVE_API }
+      }
+
       try {
-        const req = await fetch('https://v3.football.api-sports.io/teams/countries', {
-          headers: { 'x-apisports-key': API_KEY }
-        });
-        const res = await req.json();
+        const resposta = await fetch('https://v3.football.api-sports.io/teams/countries', opcoesFetch)
+        const json = await resposta.json()
         
-        this.paisesDisponiveis = res.response;
-      } catch (e) {
-        this.erroAPI = 'Falha de conexão ao carregar a lista de países.';
+        this.paisesDisponiveis = json.response
+        console.log('Total de países carregados:', this.paisesDisponiveis.length)
+
+      } catch (falha) {
+        this.erroAtual = 'Falha de comunicação ao carregar os países.'
+        console.error('Erro no obterPaises:', falha)
       }
     },
 
-    
     async buscarElenco() {
-      if (!this.selecaoAtual) return;
+      if (!this.selecaoEscolhida) {
+        this.elenco = []
+        return
+      }
 
-      this.isLoading = true;
-      this.erroAPI = null;
-      this.elenco = []; // Limpa o ecrã anterior
+      this.estaCarregando = true
+      this.elenco = []
+      this.erroAtual = null
+
+      const opcoesFetch = {
+        method: 'GET',
+        headers: { 'x-apisports-key': CHAVE_API }
+      }
 
       try {
-        // Passo 1: Descobrir o ID
-        const reqTime = await fetch(`https://v3.football.api-sports.io/teams?name=${this.selecaoAtual}`, {
-          headers: { 'x-apisports-key': API_KEY }
-        });
-        const resTime = await reqTime.json();
+        const reqTime = await fetch(`https://v3.football.api-sports.io/teams?name=${this.selecaoEscolhida}`, opcoesFetch)
+        const jsonTime = await reqTime.json()
 
-        if (!resTime.response || resTime.response.length === 0) {
-          this.erroAPI = 'Seleção não localizada no banco de dados.';
-          this.isLoading = false;
-          return;
+        if (!jsonTime.response || jsonTime.response.length === 0) {
+          this.erroAtual = 'Não foi possível encontrar essa seleção.'
+          return
         }
 
-        const idSelecao = resTime.response[0].team.id;
+        const idEquipe = jsonTime.response[0].team.id
+        console.log('Time localizado com ID:', idEquipe)
 
-       
-        const reqPlantel = await fetch(`https://v3.football.api-sports.io/players/squads?team=${idSelecao}`, {
-          headers: { 'x-apisports-key': API_KEY }
-        });
-        const resPlantel = await reqPlantel.json();
+        const reqJogadores = await fetch(`https://v3.football.api-sports.io/players/squads?team=${idEquipe}`, opcoesFetch)
+        const jsonJogadores = await reqJogadores.json()
 
-        if (!resPlantel.response || resPlantel.response.length === 0) {
-          this.erroAPI = 'Plantel não disponível para esta equipa.';
-          this.isLoading = false;
-          return;
+        if (!jsonJogadores.response || jsonJogadores.response.length === 0) {
+          this.erroAtual = 'Plantel vazio para esta equipe.'
+          return
         }
 
-        this.elenco = resPlantel.response[0].players;
-        
-      } catch (e) {
-        this.erroAPI = 'Ocorreu um erro ao comunicar com a API-Sports.';
+        this.elenco = jsonJogadores.response[0].players
+        console.log('Total de atletas encontrados:', this.elenco.length)
+
+      } catch (falha) {
+        this.erroAtual = 'Falha ao buscar as figurinhas. O token pode ter expirado.'
+        console.error('Erro no buscarElenco:', falha)
       } finally {
-        this.isLoading = false;
+        this.estaCarregando = false
       }
     },
 
-    
-    imagemFallback(event, nome) {
-      const iniciais = nome.substring(0, 2).toUpperCase();
-      event.target.src = `https://placehold.co/150x150/0f172a/fbbf24?text=${iniciais}`;
+    imagemAlternativa(evento) {
+      evento.target.src = 'https://media.api-sports.io/football/players/0.png'
     }
   }
-};
+}
 </script>
 
 <style scoped>
-
-.album-container {
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 2rem;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background-color: #f8fafc; /* Fundo cinza super claro */
+.pagina-figurinhas {
+  min-height: 100vh;
+  background-color: #f1f5f9;
+  padding: 20px;
+  font-family: 'Segoe UI', Arial, sans-serif;
 }
 
-
-.album-header {
+.cabecalho {
+  background-color: #0f172a;
+  color: white;
   text-align: center;
-  background: linear-gradient(135deg, #1e293b, #0f172a); /* Gradiente escuro */
-  color: #f8fafc;
-  padding: 2.5rem;
+  padding: 30px 20px;
   border-radius: 12px;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-  margin-bottom: 2rem;
+  margin-bottom: 25px;
 }
 
-.album-header h1 {
+.cabecalho h1 {
+  font-size: 32px;
+  margin: 0 0 8px 0;
+}
+
+.cabecalho p {
+  font-size: 16px;
   margin: 0;
-  font-size: 2.2rem;
-  color: #fbbf24; /* Dourado */
+  opacity: 0.85;
 }
 
-.album-header h2 {
-  margin-top: 0.5rem;
-  font-size: 1.1rem;
-  font-weight: 400;
-  color: #94a3b8;
-}
-
-
-.controls-section {
+.selecao-pais {
   display: flex;
-  justify-content: center;
   align-items: center;
-  gap: 1rem;
-  margin-bottom: 2rem;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 25px;
 }
 
-.controls-section label {
-  font-weight: 600;
-  color: #334155;
-  font-size: 1.1rem;
-}
-
-#country-picker {
-  padding: 0.75rem 1.5rem;
-  border-radius: 8px;
-  border: 1px solid #cbd5e1;
-  background-color: white;
-  font-size: 1rem;
+.selecao-pais label {
+  font-size: 18px;
+  font-weight: bold;
   color: #0f172a;
-  cursor: pointer;
-  transition: border-color 0.2s;
 }
 
-#country-picker:focus {
-  outline: none;
-  border-color: #fbbf24;
-}
-
-
-.alert {
-  padding: 1rem;
+.selecao-pais select {
+  padding: 10px 16px;
+  font-size: 16px;
+  border: 2px solid #0f172a;
   border-radius: 8px;
-  text-align: center;
-  font-weight: 500;
-  margin-bottom: 1.5rem;
-}
-
-.info { background-color: #e0f2fe; color: #0369a1; }
-.danger { background-color: #fee2e2; color: #b91c1c; }
-.warning { background-color: #fef9c3; color: #a16207; }
-
-
-.cards-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-  gap: 1.5rem;
-}
-
-
-.player-card {
   background-color: white;
+  color: #333;
+  cursor: pointer;
+  min-width: 220px;
+}
+
+.selecao-pais select:focus {
+  outline: none;
+  border-color: #0ea5e9;
+  box-shadow: 0 0 6px rgba(14, 165, 233, 0.4);
+}
+
+.mensagem-carregando,
+.mensagem-erro,
+.mensagem-vazia {
+  text-align: center;
+  font-size: 18px;
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.mensagem-carregando {
+  background-color: #e0f2fe;
+  color: #0369a1;
+}
+
+.mensagem-erro {
+  background-color: #fdecea;
+  color: #c0392b;
+}
+
+.mensagem-vazia {
+  background-color: #fff3cd;
+  color: #856404;
+}
+
+.grid-figurinhas {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 20px;
+  padding: 10px 0;
+}
+
+.figurinha {
+  background-color: white;
+  border: 3px solid #0f172a;
   border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-  border: 1px solid #e2e8f0;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12);
+  transition: transform 0.2s;
 }
 
-.player-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.15);
+.figurinha:hover {
+  transform: scale(1.05);
 }
 
-.card-image-wrapper {
-  position: relative;
-  background-color: #e2e8f0;
-  height: 180px;
-  display: flex;
-  justify-content: center;
-  align-items: flex-end;
-  padding-top: 1rem;
+.figurinha-header {
+  background-color: #0f172a;
+  padding: 6px;
+  text-align: center;
 }
 
-.card-image-wrapper img {
-  height: 90%;
-  object-fit: contain;
-}
-
-
-.player-number {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  background-color: #fbbf24;
-  color: #0f172a;
+.posicao {
+  color: white;
+  font-size: 11px;
   font-weight: bold;
-  width: 32px;
-  height: 32px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  font-size: 0.9rem;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
-.card-details {
-  padding: 1rem;
+.figurinha-foto {
+  background-color: #f8fafc;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  height: 130px;
+}
+
+.figurinha-foto img {
+  width: 100px;
+  height: 110px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.figurinha-info {
+  padding: 10px 8px;
   text-align: center;
   background-color: white;
-  border-top: 4px solid #fbbf24;
 }
 
-.player-name {
-  margin: 0;
-  font-size: 1.1rem;
+.nome-jogador {
+  font-size: 13px;
+  font-weight: bold;
   color: #0f172a;
+  margin: 0 0 4px 0;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-.player-position {
-  margin: 0.4rem 0 0;
-  font-size: 0.8rem;
+.numero-jogador {
+  font-size: 12px;
   color: #64748b;
-  text-transform: uppercase;
-  font-weight: 700;
-  letter-spacing: 1px;
+  margin: 0;
 }
 </style>
