@@ -1,20 +1,24 @@
 <template>
   <div>
     <NavBarComponent />
-    <banner-component />
-  <router-view />
+    <BannerCompanent/>
+    <router-view />
+    
   </div>
 </template>
 <script>
-import NavBarComponent from './components/NavBarComponent.vue';
-import BannerComponent from './components/BannerComponent.vue';
+import BannerCompanent from "./components/BannerCompanent.vue";
+import NavBarComponent from "./components/NavBarComponent.vue";
+
 export default {
   name: "App",
-  components:{
+  components: {
     NavBarComponent,
-    BannerComponent,
+    BannerCompanent,
+    
+    
   },
-}
+};
 </script>
 <style>
 #app {
