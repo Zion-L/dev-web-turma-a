@@ -30,17 +30,13 @@
         </ul>
         <div class="divider"></div>
         <ul>
-          <li v-for="(bebida, index) in pedido.bebidas" :key="index">
+          <li v-for="(bebida, index) in pedido.bebida" :key="index">
             {{ bebida.nome }}
           </li>
         </ul>
       </div>
       <div>
-        <select
-          name="status"
-          class="status"
-          @change="atualizarStatusPedido($event, pedido.id)"
-        >
+        <select name="status" class="status" @change="atualizarStatusPedido($event, pedido.id)">
           <option value="">Selecione</option>
           <option
             v-for="status in listaStatusPedido"
@@ -54,11 +50,10 @@
       </div>
       <div id="div-acoes">
         <img
-          @click="deletarPedido(pedido.id)"
-          src="/img/icone_lixeira.png"
-          width="35px"
-          height="35px"
-        />
+        @click="deletarPedido(pedido.id)"
+         src="/img/icone_lixeira.png" 
+         width="35px" 
+         height="35px" />
       </div>
     </div>
   </div>
@@ -74,30 +69,30 @@ export default {
   },
   methods: {
     async consultarPedidos() {
-      const response = await fetch("http://localhost:3000/pedidos");
+      const response = await fetch(`${this.$apiUrl}/pedidos`);
       const dados = await response.json();
       console.log(dados);
       this.listaPedidosRealizados = dados;
     },
     async consultarStatusPedido() {
-      const response = await fetch("http://localhost:3000/status_pedido");
+      const response = await fetch(`${this.$apiUrl}/status_pedido`);
       this.listaStatusPedido = await response.json();
     },
     async deletarPedido(id) {
-      const response = await fetch(`http://localhost:3000/pedidos/${id}`, {
-        method: "DELETE",
-      });
+        const response = await fetch(`${this.$apiUrl}/pedidos/${id}`, {
+            method: "DELETE",
+        });
     },
-    async atualizarStatusPedido(event, idPedido) {
-      const idPedidoAtualizado = event.target.value;
+    async atualizarStatusPedido(event, idPedido){
+        const idPedidoAtualizado = event.target.value;
 
-      const atualizaoJson = JSON.stringify({ statusId: idPedidoAtualizado });
+        const atualizaoJson = JSON.stringify({statusId : idPedidoAtualizado});
 
-      await fetch(`http://localhost:3000/pedidos/${idPedido}`, {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: atualizaoJson,
-      });
+        await fetch(`${this.$apiUrl}/pedidos/${idPedido}`, {
+            method: "PATCH",
+            headers: {"content-Type" : "application/json"},
+            body: atualizaoJson,
+        });
     },
   },
   mounted() {

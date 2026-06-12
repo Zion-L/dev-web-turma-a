@@ -10,7 +10,7 @@
           :src="burguer && burguer.foto ? burguer.foto : ''"
         />
       </div>
-      <div class="inputs" id="form-pedido">
+      <div class="inputs">
         <label for="nome-cliente">Nome</label>
         <input
           type="text"
@@ -22,10 +22,10 @@
       </div>
       <div class="inputs">
         <label>Ponto da carne</label>
-        <select
-          name="ponto-carne"
-          id="ponto-carne"
-          v-model="pontoCarneSelecionado"
+        <select 
+         name="ponto-carne" 
+         id="ponto-carne" 
+         v-model="pontoCarneSelecionado"
         >
           <option value="" selected>Selecione o ponto</option>
           <option
@@ -63,12 +63,12 @@
           v-for="bebida in listaBebidas"
           :key="bebida.id"
         >
-          <input
-            type="checkbox"
-            :name="bebida.nome"
-            :value="bebida"
-            v-model="listaBebidasSelecionadas"
-          />
+          <input 
+          type="checkbox" 
+          :name="bebida.nome" 
+          :value="bebida" 
+          v-model="listaBebidasSelecionadas" 
+        />
           <span>{{ bebida.nome }}</span>
         </div>
         <div class="inputs">
@@ -97,19 +97,19 @@ export default {
   },
   methods: {
     async getTipoPontos() {
-      const response = await fetch("http://localhost:3000/tipos_pontos");
+      const response = await fetch(`${this.$apiUrl}/tipos_pontos`);
       const dados = await response.json();
       this.listaPontoCarne = dados;
     },
     async getOpcionais() {
-      const response = await fetch("http://localhost:3000/opcionais");
+      const response = await fetch(`${this.$apiUrl}/opcionais`);
       const dados = await response.json();
       this.listaComplementos = dados.complemento;
       this.listaBebidas = dados.bebidas;
     },
-    async criarPedido(e) {
-      e.preventDefault();
-
+    async criarPedido(e){
+        e.preventDefault();
+      
       const dadosPedido = {
         nome: this.nomeCliente,
         ponto: this.pontoCarneSelecionado,
@@ -123,9 +123,9 @@ export default {
 
       const dadosJson = JSON.stringify(dadosPedido);
 
-      const req = await fetch("http://localhost:3000/pedidos", {
+      const req = await fetch(`${this.$apiUrl}/pedidos`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {"Content-Type" : "application/json"},
         body: dadosJson,
       });
     },

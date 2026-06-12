@@ -1,18 +1,22 @@
 <template>
   <div>
     <NavBarComponent />
-    <BannerComponent />
+    <BannerCompanent/>
     <router-view />
+    
   </div>
 </template>
 <script>
+import BannerCompanent from "./components/BannerCompanent.vue";
 import NavBarComponent from "./components/NavBarComponent.vue";
-import BannerComponent from "./components/BannerComponent.vue";
+
 export default {
   name: "App",
   components: {
     NavBarComponent,
-    BannerComponent,
+    BannerCompanent,
+    
+    
   },
 };
 </script>
