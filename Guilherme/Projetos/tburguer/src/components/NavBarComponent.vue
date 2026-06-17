@@ -2,8 +2,7 @@
   <div>
     <nav id="nav">
       <router-link to="/" id="logo-url">
-        <span id="logo">☕</span>
-        <span id="logo-nome">Café Dois Dedim</span>
+        <img src="/img/logo_cafe.jpeg" id="logo" />
       </router-link>
       <router-link to="/">Home</router-link> |
       <router-link to="/menu">Cardápio</router-link> |
@@ -20,17 +19,17 @@ export default {
 
 <style scoped>
 #logo {
-  font-size: 2rem;
-  transition: 0.2s;
-  display: inline-block;
+  width: 60px;
+  height: 60px;
+  object-fit: contain;
+  mix-blend-mode: screen;
+  transition: 0.4s;
 }
 
-#logo-nome {
-  font-size: 1.1rem;
-  color: #F5E6C8;
-  font-family: Georgia, serif;
-  margin-left: 8px;
-  letter-spacing: 0.04em;
+#logo:hover {
+  width: 70px;
+  height: 70px;
+  rotate: 360deg;
 }
 
 #nav #logo-url {
@@ -39,11 +38,7 @@ export default {
   display: flex;
   align-items: center;
   text-decoration: none;
-}
-
-#logo:hover {
-  transform: rotate(20deg) scale(1.2);
-  display: inline-block;
+  background: transparent;
 }
 
 #nav {

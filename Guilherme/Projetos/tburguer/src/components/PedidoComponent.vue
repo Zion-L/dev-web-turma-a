@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="pedido-wrap">
     <!-- Alerta semântico -->
     <alerta-component
       v-if="alerta.mensagem"
@@ -10,42 +10,44 @@
     />
 
     <form id="pedido-form" @submit="criarPedido($event)">
-      <!-- Foto e nome do café selecionado -->
-      <div>
-        <p id="nome-hamburguer-content">
-          {{ cafe && cafe.nome ? cafe.nome : "-" }}
-        </p>
+
+      <!-- Card do café selecionado -->
+      <div id="cafe-selecionado">
         <img
+          v-if="cafe && cafe.foto"
+          :src="cafe.foto"
+          :alt="cafe.nome"
           id="foto-content"
-          :src="cafe && cafe.foto ? cafe.foto : ''"
-          :alt="cafe && cafe.nome ? cafe.nome : 'Café'"
+          @error="$event.target.style.display='none'"
         />
+        <div id="cafe-selecionado-info">
+          <p id="nome-cafe">{{ cafe && cafe.nome ? cafe.nome : "-" }}</p>
+          <p id="preco-cafe" v-if="cafe && cafe.valor">R$ {{ cafe.valor.toFixed(2) }}</p>
+          <p id="desc-cafe" v-if="cafe && cafe.descricao">{{ cafe.descricao }}</p>
+        </div>
       </div>
 
       <!-- Nome do cliente -->
-      <div class="inputs">
-        <label for="nome-cliente">Nome do cliente *</label>
+      <div class="campo">
+        <label for="nome-cliente">Nome do cliente <span class="obrigatorio">*</span></label>
         <input
           type="text"
           v-model="nomeCliente"
           id="nome-cliente"
-          name="nome-cliente"
           placeholder="Digite seu nome"
           :class="{ 'input-erro': erros.nome }"
         />
         <span v-if="erros.nome" class="campo-erro">{{ erros.nome }}</span>
       </div>
 
-      <!-- Tamanho (substitui "Ponto da Carne") -->
-      <div class="inputs">
-        <label>Tamanho *</label>
+      <!-- Tamanho -->
+      <div class="campo">
+        <label>Tamanho <span class="obrigatorio">*</span></label>
         <select
-          name="tamanho"
-          id="tamanho"
           v-model="tamanhoSelecionado"
           :class="{ 'input-erro': erros.tamanho }"
         >
-          <option value="" selected>Selecione o tamanho</option>
+          <option value="">Selecione o tamanho</option>
           <option
             v-for="tamanho in listaTamanhos"
             :key="tamanho.id"
@@ -57,50 +59,84 @@
         <span v-if="erros.tamanho" class="campo-erro">{{ erros.tamanho }}</span>
       </div>
 
-      <!-- Acompanhamentos (substitui "Complementos") -->
-      <div class="inputs">
-        <label id="opcionais-titulo">Selecione os opcionais</label>
-        <label id="opcionais-subtitulo">Acompanhamentos</label>
-
-        <div
-          class="checkbox-container"
-          v-for="acomp in listaAcompanhamentos"
-          :key="acomp.id"
-        >
-          <input
-            type="checkbox"
-            :name="acomp.nome"
-            :value="acomp"
-            v-model="listaAcompanhamentosSelecionados"
-          />
-          <span>{{ acomp.nome }}</span>
-        </div>
-
-        <label>Adicione uma bebida</label>
-
-        <div
-          class="checkbox-container"
-          v-for="bebida in listaBebidas"
-          :key="bebida.id"
-        >
-          <input
-            type="checkbox"
-            :name="bebida.nome"
-            :value="bebida"
-            v-model="listaBebidasSelecionadas"
-          />
-          <span>{{ bebida.nome }}</span>
-        </div>
-
-        <div class="inputs" style="margin-top: 16px;">
-          <input
-            type="submit"
-            class="submit-btn"
-            value="Confirmar Pedido"
-            :disabled="enviando"
-          />
+      <!-- Acompanhamentos -->
+      <div class="campo">
+        <label class="label-secao">🍞 Acompanhamentos <small>(opcional)</small></label>
+        <div class="opcoes-grid">
+          <div
+            class="opcao-item"
+            v-for="acomp in listaAcompanhamentos"
+            :key="acomp.id"
+          >
+            <input
+              type="checkbox"
+              :id="'acomp-' + acomp.id"
+              :value="acomp"
+              v-model="listaAcompanhamentosSelecionados"
+            />
+            <label :for="'acomp-' + acomp.id" class="label-opcao">
+              {{ acomp.nome }}
+              <span class="opcao-preco">R$ {{ acomp.valor.toFixed(2) }}</span>
+            </label>
+          </div>
         </div>
       </div>
+
+      <!-- Bebidas -->
+      <div class="campo">
+        <label class="label-secao">🥤 Bebidas <small>(opcional)</small></label>
+        <div class="opcoes-grid">
+          <div
+            class="opcao-item"
+            v-for="bebida in listaBebidas"
+            :key="bebida.id"
+          >
+            <input
+              type="checkbox"
+              :id="'beb-' + bebida.id"
+              :value="bebida"
+              v-model="listaBebidasSelecionadas"
+            />
+            <label :for="'beb-' + bebida.id" class="label-opcao">
+              {{ bebida.nome }}
+              <span class="opcao-preco">R$ {{ bebida.valor.toFixed(2) }}</span>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Resumo total -->
+      <div id="resumo" v-if="cafe">
+        <p class="resumo-linha">
+          <span>☕ {{ cafe.nome }}</span>
+          <span>R$ {{ cafe.valor.toFixed(2) }}</span>
+        </p>
+        <p
+          class="resumo-linha"
+          v-for="a in listaAcompanhamentosSelecionados"
+          :key="'ra-' + a.id"
+        >
+          <span>🍞 {{ a.nome }}</span>
+          <span>R$ {{ a.valor.toFixed(2) }}</span>
+        </p>
+        <p
+          class="resumo-linha"
+          v-for="b in listaBebidasSelecionadas"
+          :key="'rb-' + b.id"
+        >
+          <span>🥤 {{ b.nome }}</span>
+          <span>R$ {{ b.valor.toFixed(2) }}</span>
+        </p>
+        <div class="resumo-total">
+          <span>Total</span>
+          <span>R$ {{ totalPedido.toFixed(2) }}</span>
+        </div>
+      </div>
+
+      <button type="submit" id="btn-confirmar" :disabled="enviando">
+        {{ enviando ? "Enviando…" : "✔ Confirmar Pedido" }}
+      </button>
+
     </form>
   </div>
 </template>
@@ -113,9 +149,7 @@ const API = process.env.VUE_APP_API_BASE_URL || "http://localhost:3000";
 export default {
   name: "PedidoComponent",
   components: { AlertaComponent },
-  props: {
-    cafe: null,
-  },
+  props: { cafe: null },
   data() {
     return {
       listaTamanhos: [],
@@ -130,23 +164,28 @@ export default {
       enviando: false,
     };
   },
+  computed: {
+    totalPedido() {
+      let total = this.cafe ? this.cafe.valor : 0;
+      this.listaAcompanhamentosSelecionados.forEach((a) => (total += a.valor));
+      this.listaBebidasSelecionadas.forEach((b) => (total += b.valor));
+      return total;
+    },
+  },
   methods: {
     async getTamanhos() {
-      const response = await fetch(`${API}/tipos_tamanho`);
-      const dados = await response.json();
-      this.listaTamanhos = dados;
+      const res = await fetch(`${API}/tipos_tamanho`);
+      this.listaTamanhos = await res.json();
     },
     async getOpcionais() {
-      const response = await fetch(`${API}/opcionais`);
-      const dados = await response.json();
+      const res = await fetch(`${API}/opcionais`);
+      const dados = await res.json();
       this.listaAcompanhamentos = dados.acompanhamentos;
       this.listaBebidas = dados.bebidas;
     },
-
     validar() {
       let valido = true;
       this.erros = { nome: "", tamanho: "" };
-
       if (!this.nomeCliente.trim()) {
         this.erros.nome = "Informe o seu nome.";
         valido = false;
@@ -160,14 +199,10 @@ export default {
       }
       return valido;
     },
-
     async criarPedido(e) {
       e.preventDefault();
-
       if (!this.validar()) return;
-
       this.enviando = true;
-
       const dadosPedido = {
         nome: this.nomeCliente,
         tamanho: this.tamanhoSelecionado,
@@ -176,29 +211,21 @@ export default {
         cafe: this.cafe,
         statusId: 6,
       };
-
       try {
         const req = await fetch(`${API}/pedidos`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(dadosPedido),
         });
-
         if (!req.ok) throw new Error();
-
         this.exibirAlerta("sucesso", "Pedido realizado com sucesso! Redirecionando…", 2500);
-
-        setTimeout(() => {
-          this.$router.push({ path: "/pedidos" });
-        }, 2600);
-
+        setTimeout(() => { this.$router.push({ path: "/pedidos" }); }, 2600);
       } catch {
         this.exibirAlerta("erro", "Erro ao enviar o pedido. Tente novamente.");
       } finally {
         this.enviando = false;
       }
     },
-
     exibirAlerta(tipo, mensagem, duracao = 4000) {
       this.alerta = { tipo, mensagem, duracao };
     },
@@ -214,96 +241,207 @@ export default {
 </script>
 
 <style scoped>
-#foto-content {
-  margin-bottom: 16px;
-  border-radius: 16px;
-  position: relative;
-  z-index: -1;
-  justify-content: center;
-  width: 100%;
-  height: 180px;
-  object-fit: cover;
+#pedido-wrap {
+  max-width: 620px;
+  margin: 0 auto;
+  padding: 0 1rem 3rem;
 }
 
-#nome-hamburguer-content {
-  font-size: 43px;
-  font-weight: bold;
-  text-align: start;
-  margin-bottom: -90px;
-  margin-left: 40px;
-  color: antiquewhite;
-  padding: 16px;
-}
-
-.inputs {
+#pedido-form {
   display: flex;
   flex-direction: column;
-  margin-bottom: 16px;
+  gap: 24px;
+}
+
+/* Card do café selecionado */
+#cafe-selecionado {
+  background: #fff;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 4px 16px rgba(28,10,0,0.15);
+  display: flex;
+  flex-direction: column;
+}
+
+#foto-content {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  display: block;
+}
+
+#cafe-selecionado-info {
+  padding: 16px 20px;
+}
+
+#nome-cafe {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #1C0A00;
+  margin-bottom: 4px;
+  font-family: Georgia, serif;
+}
+
+#preco-cafe {
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: #C47A2B;
+  margin-bottom: 8px;
+}
+
+#desc-cafe {
+  font-size: 0.875rem;
+  color: #666;
+  line-height: 1.5;
+}
+
+/* Campos */
+.campo {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  background: #fff;
+  padding: 18px 20px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(28,10,0,0.08);
 }
 
 label {
   font-weight: bold;
-  margin-bottom: 16px;
-  color: #222;
-  padding: 5px 12px;
-  flex-direction: start;
-  display: flex;
+  color: #1C0A00;
+  font-size: 0.95rem;
   border-left: 4px solid #C47A2B;
+  padding-left: 10px;
 }
 
-input,
+.label-secao {
+  font-size: 1rem;
+  border-left: 4px solid #C47A2B;
+  padding-left: 10px;
+}
+
+.label-secao small {
+  font-weight: 400;
+  color: #888;
+  font-size: 0.82rem;
+}
+
+.obrigatorio { color: #D64045; }
+
+input[type="text"],
 select {
-  padding: 12px;
-  width: 300px;
-  border: solid #222 1px;
+  padding: 12px 14px;
+  border: 1.5px solid #d0c4b0;
   border-radius: 8px;
-  height: 40px;
-  font-size: 12px;
+  font-size: 1rem;
+  font-family: inherit;
+  outline: none;
+  transition: border-color 0.2s;
+  width: 100%;
+  box-sizing: border-box;
+  height: auto;
 }
 
-select { height: 45px; }
+input[type="text"]:focus,
+select:focus { border-color: #C47A2B; }
 
 .input-erro { border-color: #D64045 !important; }
 
 .campo-erro {
   color: #D64045;
   font-size: 0.82rem;
-  margin-top: 4px;
   font-weight: 600;
 }
 
-#opcionais-titulo { width: 100%; }
-
-#opcionais-subtitulo {
+/* Opções de checkbox */
+.opcoes-grid {
   display: flex;
-  align-items: flex-start;
-  width: 100%;
-  margin-bottom: 12px;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 4px;
 }
 
-.checkbox-container span { margin-left: 6px; font-weight: bold; }
-.checkbox-container span,
-.checkbox-container input { width: auto; height: 20px; }
+.opcao-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
 
-.submit-btn {
-  background-color: #1C0A00;
-  color: #C47A2B;
-  font-weight: bold;
-  border: none;
-  font-size: 18px;
-  border-radius: 12px;
-  padding: 16px;
-  margin: 0 auto;
+.opcao-item input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: #C47A2B;
   cursor: pointer;
-  width: 100%;
-  height: auto;
-  transition: 0.5s;
+  flex-shrink: 0;
 }
-.submit-btn:hover {
+
+.label-opcao {
+  border: none;
+  padding: 0;
+  font-weight: 500;
+  color: #333;
+  font-size: 0.92rem;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.opcao-preco {
+  color: #C47A2B;
+  font-weight: 700;
+  font-size: 0.88rem;
+}
+
+/* Resumo */
+#resumo {
+  background: #1C0A00;
+  color: #F5E6C8;
+  border-radius: 12px;
+  padding: 18px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.resumo-linha {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.9rem;
+  border-bottom: 1px dashed rgba(245,230,200,0.2);
+  padding-bottom: 6px;
+}
+
+.resumo-total {
+  display: flex;
+  justify-content: space-between;
+  font-size: 1.15rem;
+  font-weight: bold;
+  color: #C47A2B;
+  padding-top: 6px;
+  margin-top: 4px;
+}
+
+/* Botão confirmar */
+#btn-confirmar {
   background-color: #C47A2B;
   color: #1C0A00;
+  font-weight: bold;
+  border: none;
+  font-size: 1.1rem;
+  border-radius: 12px;
+  padding: 16px;
+  cursor: pointer;
+  width: 100%;
+  transition: 0.3s;
 }
-.submit-btn:disabled {
+
+#btn-confirmar:hover {
+  background-color: #1C0A00;
+  color: #C47A2B;
+}
+
+#btn-confirmar:disabled {
   opacity: 0.6;
   cursor: not-allowed;
 }

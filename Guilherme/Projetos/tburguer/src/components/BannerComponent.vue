@@ -1,6 +1,9 @@
 <template>
   <div id="main-banner">
-    <h1>Café Dois Dedim ☕</h1>
+    <img src="/img/cafe.jpg" alt="Banner Café Dois Dedim" id="banner-img" />
+    <div id="banner-overlay">
+      <h1>Café Dois Dedin ☕✌️</h1>
+    </div>
   </div>
 </template>
 
@@ -12,16 +15,31 @@ export default {
 
 <style scoped>
 #main-banner {
-  background: linear-gradient(135deg, #1C0A00 0%, #3B1A08 60%, #C47A2B 100%);
-  height: 300px;
-  background-position: center;
-  background-size: cover;
+  position: relative;
+  height: 350px;
+  overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: flex-end;
 }
 
-#main-banner h1 {
+#banner-img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center center;
+  z-index: 0;
+}
+
+#banner-overlay {
+  position: relative;
+  z-index: 1;
+}
+
+#banner-overlay h1 {
   font-size: 40px;
   color: #F5E6C8;
   background: rgba(28, 10, 0, 0.75);
