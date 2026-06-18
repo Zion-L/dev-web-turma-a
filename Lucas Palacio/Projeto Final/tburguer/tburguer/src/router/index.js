@@ -5,7 +5,7 @@ import PedidosView from '@/views/PedidosView.vue'
 const routes = [
   {
     path: '/',
-    name: 'menu',
+    name: 'home',
     component: MenuView
   },
    {
