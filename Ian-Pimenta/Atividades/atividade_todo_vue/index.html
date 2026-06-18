@@ -100,33 +100,38 @@
 
     <script>
         const { createApp, ref } = Vue;
-
-        createApp({
-            setup()
+      createApp({
+            setup() {
+               
                 const novaTarefa = ref('');
-      
+
+               
                 const tarefas = ref([
                     { texto: 'Estudar as diretivas do Vue 3', concluida: false },
                     { texto: 'Fazer o commit da atividade', concluida: false }
                 ]);
 
-               
+                
                 const adicionarTarefa = () => {
-                   
-                    if (novaTarefa.value.trim() === '') return;
                   
+                    if (novaTarefa.value.trim() === '') return;
+
+                   
                     tarefas.value.push({
                         texto: novaTarefa.value,
                         concluida: false
                     });
 
+                   
                     novaTarefa.value = '';
                 };
-      
+
+                
                 const removerTarefa = (index) => {
                     tarefas.value.splice(index, 1);
                 };
 
+               
                 return {
                     novaTarefa,
                     tarefas,
@@ -138,3 +143,4 @@
     </script>
 </body>
 </html>
+
