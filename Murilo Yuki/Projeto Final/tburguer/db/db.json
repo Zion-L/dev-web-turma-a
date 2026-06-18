@@ -80,6 +80,51 @@
       },
       "statusId": "4",
       "id": 1
+    },
+    {
+      "nome": "sadsad",
+      "ponto": {
+        "id": 2,
+        "descricao": "Bem passada"
+      },
+      "bebidas": [
+        {
+          "id": 2,
+          "nome": "Shweppes Citrus 310 ml",
+          "descricao": "",
+          "foto": "https://instadelivery-public.nyc3.cdn.digitaloceanspaces.com/itens/16966989566521924cc9418_75_75.jpeg",
+          "valor": 6,
+          "eh_novidade": false
+        }
+      ],
+      "complemento": [
+        {
+          "id": 1,
+          "nome": "Combo Bebida + Batata",
+          "descricao": "Batata ondulada sequinha e crocante temperada com lemon pepper + bebida de sua escolha",
+          "foto": "https://instadelivery-public.nyc3.cdn.digitaloceanspaces.com/itens/1696431534651d7daeba24e_75_75.jpeg",
+          "valor": 11,
+          "eh_novidade": true
+        },
+        {
+          "id": 2,
+          "nome": "Batata ondulada sequinha e crocante temperada com lemon pepper",
+          "descricao": "",
+          "foto": "https://instadelivery-public.nyc3.cdn.digitaloceanspaces.com/itens/1696431513651d7d99094b6_75_75.jpeg",
+          "valor": 7,
+          "eh_novidade": false
+        }
+      ],
+      "burguer": {
+        "id": 2,
+        "nome": "Veggie",
+        "foto": "https://instadelivery-public.nyc3.cdn.digitaloceanspaces.com/itens/1696429812651d76f4d8671_75_75.jpeg",
+        "descricao": "Delicioso pão de brioche selado na brasa com manteiga de leite, maionese secreta, tomate assado e defumado na lenha frutífera, blend de arroz negro, batata baroa e Shimeji 150 gramas grelhado e regado ao azeite , queijo derretido na brasa e molho secreto de cebola caramelizada, tudo preparado com aquele sabor de churrasco.",
+        "valor": 35,
+        "eh_novidade": true
+      },
+      "statusId": 5,
+      "id": 2
     }
   ],
   "opcionais": {
