@@ -1,12 +1,18 @@
 <template>
   <div>
+    <alerta-component-vue
+      :tipo="alerta.tipo"
+      :mensagem="alerta.mensagem"
+      :visivel="alerta.visivel"
+      @fechar="fecharAlerta"
+    />
     <div id="pedidos-tabela">
       <div>
         <div id="pedidos-tabela-cabecalho">
           <div id="ordem-id">#ID</div>
           <div>Nome</div>
-          <div>Hamburguer</div>
-          <div>Ponto</div>
+          <div>Item</div>
+          <div>Tamanho</div>
           <div>Opcionais</div>
           <div>Status</div>
           <div id="div-acoes">Ações</div>
@@ -20,18 +26,18 @@
     >
       <div id="ordem-numero">{{ pedido.id }}</div>
       <div>{{ pedido.nome }}</div>
-      <div>{{ pedido.burguer.nome }}</div>
-      <div>{{ pedido.ponto.descricao }}</div>
+      <div>{{ pedido.item && pedido.item.nome ? pedido.item.nome : "-" }}</div>
+      <div>{{ pedido.tamanho && pedido.tamanho.descricao ? pedido.tamanho.descricao : "-" }}</div>
       <div>
-        <ul>
-          <li v-for="(complemento, index) in pedido.complemento" :key="index">
-            {{ complemento.nome }}
+        <ul v-if="pedido.adicionais">
+          <li v-for="(adicional, index) in pedido.adicionais" :key="index">
+            {{ adicional.nome }}
           </li>
         </ul>
         <div class="divider"></div>
-        <ul>
-          <li v-for="(bebida, index) in pedido.bebidas" :key="index">
-            {{ bebida.nome }}
+        <ul v-if="pedido.acompanhamentos">
+          <li v-for="(acompanhamento, index) in pedido.acompanhamentos" :key="index">
+            {{ acompanhamento.nome }}
           </li>
         </ul>
       </div>
@@ -64,29 +70,42 @@
   </div>
 </template>
 <script>
+import AlertaComponentVue from "@/components/AlertaComponent.vue";
+
 export default {
   name: "ListaPedidoComponent",
+  components: {
+    AlertaComponentVue,
+  },
   data() {
     return {
       listaPedidosRealizados: [],
       listaStatusPedido: [],
+      alerta: { visivel: false, tipo: "aviso", mensagem: "" },
     };
   },
   methods: {
     async consultarPedidos() {
       const response = await fetch(`${this.$apiUrl}/pedidos`);
       const dados = await response.json();
-      console.log(dados);
       this.listaPedidosRealizados = dados;
     },
     async consultarStatusPedido() {
       const response = await fetch(`${this.$apiUrl}/status_pedido`);
       this.listaStatusPedido = await response.json();
     },
+    mostrarAlerta(tipo, mensagem) {
+      this.alerta = { visivel: true, tipo: tipo, mensagem: mensagem };
+    },
+    fecharAlerta() {
+      this.alerta.visivel = false;
+    },
     async deletarPedido(id) {
-      const response = await fetch(`${this.$apiUrl}/pedidos/${id}`, {
+      await fetch(`${this.$apiUrl}/pedidos/${id}`, {
         method: "DELETE",
       });
+      this.consultarPedidos();
+      this.mostrarAlerta("sucesso", "Pedido excluído com sucesso!");
     },
     async atualizarStatusPedido(event, idPedido) {
       const idPedidoAtualizado = event.target.value;
@@ -98,11 +117,17 @@ export default {
         headers: { "Content-Type": "application/json" },
         body: atualizaoJson,
       });
+      this.consultarPedidos();
+      this.mostrarAlerta("sucesso", "Status do pedido atualizado.");
     },
   },
   mounted() {
     this.consultarPedidos();
     this.consultarStatusPedido();
+
+    if (this.$route.query.sucesso === "true") {
+      this.mostrarAlerta("sucesso", "Pedido confirmado com sucesso!");
+    }
   },
 };
 </script>
