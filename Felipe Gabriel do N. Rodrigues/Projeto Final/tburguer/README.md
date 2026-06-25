@@ -2,6 +2,12 @@
 
 Sistema de  cafeteria , feita com **Vue 3** e **JSON Server**. O usuário pode navegar pelo menu de cafés, montar o próprio pedido com complementos e bebidas, acompanhar todos os pedidos realizados e gerenciar os status de cada um.
 
+
+# Nome e RA do estudante:
+
+Nome: Felipe Gabriel do Nascimento Rodrigues
+RA : 22509850
+
 ---
 
 ## 🌐 Links
