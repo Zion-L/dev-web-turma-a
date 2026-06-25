@@ -1,8 +1,6 @@
 <template>
     <div>
-        <!-- O alerta fica no topo da lista.
-             :tipo e :mensagem passam os dados para dentro do componente (props).
-             @fechar escuta o evento emitido pelo AlertComponent e limpa a mensagem. -->
+
         <alert-component
             :tipo="alerta.tipo"
             :mensagem="alerta.mensagem"
@@ -89,11 +87,10 @@ export default {
         };
     },
     methods: {
-        // Método auxiliar: exibe o alerta e some automaticamente após 4 segundos
+        // Mostrar alerta e sumir em 4 segundos
         mostrarAlerta(tipo, mensagem) {
             this.alerta.tipo = tipo;
             this.alerta.mensagem = mensagem;
-            // setTimeout executa a função após 4000ms (4s), limpando a mensagem
             setTimeout(() => { this.alerta.mensagem = ''; }, 4000);
         },
 
@@ -118,7 +115,7 @@ export default {
             this.modalVisivel = true;
         },
 
-        // Chamado quando o usuário clica em "Sim, excluir!" no modal
+        // Chamado quando o usuário clica em sim no modal de exclusão.
         async confirmarDelecao() {
             this.modalVisivel = false;
             const id = this.pedidoParaDeletar;

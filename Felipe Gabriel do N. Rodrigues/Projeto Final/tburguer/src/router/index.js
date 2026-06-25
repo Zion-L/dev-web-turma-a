@@ -8,12 +8,12 @@ const routes = [
   {
     path: '/',
     name: 'home',
-    component: HomeView,   // ← agora / vai para a página introdutória
+    component: HomeView,   
   },
   {
     path: '/menu',
     name: 'menu',
-    component: MenuView,   // ← /menu continua sendo a lista de cafés
+    component: MenuView,   
   },
   {
     path: '/pedidos',

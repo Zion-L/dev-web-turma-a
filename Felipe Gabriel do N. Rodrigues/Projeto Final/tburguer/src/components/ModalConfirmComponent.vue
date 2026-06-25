@@ -1,8 +1,7 @@
 <template>
-    <!-- O modal só existe no DOM quando visivel=true -->
-    <!-- O fundo escurecido (overlay) cobre a tela inteira -->
+    
     <div class="modal-overlay" v-if="visivel" @click.self="$emit('cancelar')">
-        <!-- @click.self garante que clicar fora do modal (no overlay) também cancela -->
+        <!-- @click.self para cancelar ao clicar fora do domínio (DOM) -->
         <div class="modal-caixa">
             <p class="modal-icone">{{ icone() }}</p>
             <h3 class="modal-titulo">{{ titulo }}</h3>
@@ -23,7 +22,7 @@ export default {
         titulo: { type: String, default: 'Tem certeza?' },
         mensagem: { type: String, default: '' },
         textoBotao: { type: String, default: 'Confirmar' },
-        // tipo controla a cor do botão de confirmação: 'verde' ou 'vermelho'
+        // Controlar a cor do botão de confirmação: 'verde' ou 'vermelho'
         tipo: { type: String, default: 'verde' },
     },
     emits: ['confirmar', 'cancelar'],
@@ -44,13 +43,12 @@ export default {
     position: fixed;
     /* fica sobre tudo, independente do scroll */
     inset: 0;
-    /* equivale a top:0; right:0; bottom:0; left:0 */
     background: rgba(0, 0, 0, 0.7);
     display: flex;
     align-items: center;
     justify-content: center;
     z-index: 1000;
-    /* garante que fica na frente de todos os outros elementos */
+    /* Ficar a frente de todos elementos. */
     animation: fadeIn 0.2s ease;
 }
 

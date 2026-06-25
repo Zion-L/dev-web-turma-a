@@ -15,7 +15,7 @@
 
         <form class="pedido-form" @submit="criarPedido($event)">
 
-            <!-- Cabeçalho com foto e nome do café -->
+            <!-- Foto e nome Café  -->
             <div class="cafe-header">
                 <img class="cafe-foto" :src="cafe && cafe.foto ? cafe.foto : ''"
                     :alt="cafe && cafe.nome ? cafe.nome : ''" />
@@ -53,7 +53,6 @@
                 <div class="opcoes-grid">
                     <label class="opcao-card" v-for="complemento in listaComplementos" :key="complemento.id"
                         :class="{ selecionado: listaComplementosSelecionados.includes(complemento) }">
-                        <!-- usamos <label> como wrapper do checkbox: clicar em qualquer parte da card marca a opção -->
                         <input type="checkbox" :value="complemento" v-model="listaComplementosSelecionados" hidden />
                         <span class="opcao-nome">{{ complemento.nome }}</span>
                         <span class="opcao-preco">R$ {{ complemento.valor }},00</span>
@@ -111,9 +110,8 @@
                 </div>
             </div>
 
-            <!-- Botão confirmar com espaçamento generoso -->
+            <!-- Botão confirmar -->
             <div class="btn-wrapper">
-                <!-- type="button" evita que o form seja submetido direto — abre o modal antes -->
                 <button type="button" class="btn-confirmar" @click="abrirModal">Confirmar Pedido</button>
             </div>
 
@@ -150,7 +148,7 @@ export default {
             alerta: {
                 tipo: 'sucesso',
                 mensagem: '',
-                erro: '',   // mensagem de erro de validação
+                erro: '',   
             },
         };
     },
@@ -177,7 +175,7 @@ export default {
             e.preventDefault();
         },
 
-        // Valida os campos e abre o modal se tudo estiver ok
+        // Valida os campos e abre o modal se tiver certo.
         abrirModal() {
             this.erros.nome = "";
             this.erros.tamanho = "";
@@ -194,12 +192,12 @@ export default {
                 return;
             }
 
-            // Limpa o erro e abre o modal
+            // Limpa o erro e abre o modal.
             this.alerta.erro = '';
             this.modalVisivel = true;
         },
 
-        // Chamado quando o usuário clica em "Sim, confirmar!" no modal
+        // Chamado quando o usuário clica em "Sim, confirmar!" no modal.
         async confirmarPedido() {
             this.modalVisivel = false;
 
@@ -222,7 +220,7 @@ export default {
             this.alerta.tipo = 'sucesso';
             this.alerta.mensagem = 'Pedido confirmado! Redirecionando para pedidos...';
 
-            // Aguarda 3 segundos e redireciona
+            // Aguarda 3 segundos para redirecionar.
             setTimeout(() => {
                 this.$router.push('/pedidos');
             }, 3000);
@@ -236,6 +234,7 @@ export default {
 </script>
 
 <style scoped>
+
 /* Wrapper centraliza o formulário na página */
 .pedido-wrapper {
     padding: 32px 24px;
@@ -245,16 +244,13 @@ export default {
 .pedido-form {
     max-width: 640px;
     margin: 0 auto;
-    /* centraliza horizontalmente */
     display: flex;
     flex-direction: column;
     gap: 28px;
-    /* espaço uniforme entre cada seção */
 }
 
 /* ── Cabeçalho com foto ── */
-/* position: relative no pai + position: absolute no filho
-   permite sobrepor o texto em cima da imagem */
+
 .cafe-header {
     position: relative;
     width: 100%;
@@ -273,6 +269,7 @@ export default {
 }
 
 /* Gradiente escuro na parte de baixo da imagem para o texto ser legível */
+
 .cafe-header-overlay {
     position: absolute;
     bottom: 0;
@@ -336,7 +333,7 @@ export default {
     transition: border-color 0.2s;
 }
 
-/* Quando o usuário clica no campo, a borda fica verde — feedback visual */
+/*  feedback visual */
 .campo-input:focus {
     border-color: rgb(0, 214, 71);
 }
@@ -347,7 +344,7 @@ export default {
 }
 
 /* ── Cards de opcionais (complementos e bebidas) ── */
-/* grid com 2 colunas que se adaptam ao espaço disponível */
+
 .opcoes-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -372,11 +369,9 @@ export default {
     border-color: rgb(0, 214, 71);
 }
 
-/* Classe .selecionado é adicionada via :class quando o checkbox está marcado */
 .opcao-card.selecionado {
     border-color: rgb(0, 214, 71);
     background: rgba(0, 214, 71, 0.1);
-    /* fundo levemente verde para indicar seleção */
 }
 
 .opcao-nome {
@@ -472,7 +467,7 @@ export default {
 }
 
 /* ── Botão confirmar ── */
-/* margin-top grande = distância generosa dos campos acima */
+
 .btn-wrapper {
     margin-top: 16px;
     padding-bottom: 40px;

@@ -1,14 +1,12 @@
 <template>
   <div class="home-wrapper">
 
-    <!-- Seção principal de boas-vindas -->
     <section class="hero">
       <div class="hero-texto">
         <h1 class="hero-titulo">Bem-vindo ao <span class="destaque">Cafézinho Selocura</span></h1>
         <p class="hero-subtitulo">
           O melhor café da região, feito com amor e muito estilo. Escolha o seu favorito e peça agora!
         </p>
-        <!-- $router.push() navega para outra rota programaticamente, igual ao router-link mas via JavaScript -->
         <button class="btn-hero" @click="$router.push('/menu')">Ver o Menu</button>
       </div>
       <div class="hero-imagem">
@@ -16,7 +14,6 @@
       </div>
     </section>
 
-    <!-- Seção de diferenciais -->
     <section class="diferenciais">
       <div class="card-diferencial">
         <span class="icone">☕</span>
@@ -50,7 +47,6 @@ export default {
   color: #f0f0f0;
 }
 
-/* ── Hero ── */
 .hero {
   display: flex;
   align-items: center;
@@ -72,7 +68,6 @@ export default {
   color: #f0f0f0;
 }
 
-/* <span class="destaque"> — envolve apenas a parte que queremos colorir de verde */
 .destaque {
   color: rgb(0, 214, 71);
 }
@@ -103,12 +98,11 @@ export default {
   border-color: rgb(0, 214, 71);
 }
 
-/* A imagem do hero fica num quadrado arredondado */
 .hero-imagem {
   flex: 1;
   max-width: 420px;
   border-radius: 20px;
-  overflow: hidden; /* garante que a imagem não vaze fora do border-radius */
+  overflow: hidden; 
   border: 3px solid rgb(0, 214, 71);
   box-shadow: 0 8px 32px rgba(0, 214, 71, 0.2);
 }
@@ -121,7 +115,6 @@ export default {
   display: block;
 }
 
-/* ── Diferenciais ── */
 .diferenciais {
   display: flex;
   gap: 24px;
@@ -131,7 +124,7 @@ export default {
 .card-diferencial {
   flex: 1;
   max-width: 280px;
-  background: #242424; /* um pouco mais claro que o fundo #1a1a1a para criar profundidade */
+  background: #242424; 
   border: 2px solid rgb(0, 214, 71);
   border-radius: 16px;
   padding: 32px 24px;

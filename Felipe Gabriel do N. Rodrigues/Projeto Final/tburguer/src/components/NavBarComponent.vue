@@ -2,7 +2,6 @@
   <div>
     <nav id="nav">
       <router-link id="logo-url" to="/">
-        <!-- Trocamos o src de um arquivo local para uma URL externa, igual ao banner -->
         <img
           id="logo"
           src="https://images.pexels.com/photos/35710835/pexels-photo-35710835.jpeg"
@@ -26,8 +25,8 @@ export default {
 #logo {
   width: 60px;
   height: 60px;
-  object-fit: cover;       /* garante que a foto do café preencha o círculo sem distorcer */
-  border-radius: 50%;      /* transforma a imagem em círculo */
+  object-fit: cover;       
+  border-radius: 50%;      
   border: 2px solid rgb(0, 214, 71);
 }
 

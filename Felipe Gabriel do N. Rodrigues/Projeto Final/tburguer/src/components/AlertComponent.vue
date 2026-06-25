@@ -1,10 +1,8 @@
 <template>
-    <!-- v-if: o alerta só existe no DOM quando há uma mensagem para mostrar -->
-    <!-- :class recebe um array: aplica sempre o tipo de cor, e só aplica 'flutuante' se a prop for true -->
+
     <div v-if="mensagem" class="alerta" :class="[tipo, { flutuante: flutuante }]">
         <span class="alerta-icone">{{ icones[tipo] }}</span>
         <span class="alerta-mensagem">{{ mensagem }}</span>
-        <!-- botão X para fechar manualmente -->
         <button class="alerta-fechar" @click="$emit('fechar')">✕</button>
     </div>
 </template>
@@ -13,8 +11,6 @@
 export default {
     name: 'AlertComponent',
 
-    // Props são os "parâmetros" que o componente recebe de quem o usa.
-    // Assim o mesmo componente serve para qualquer situação, só mudando o tipo e a mensagem.
     props: {
         // tipo define a cor: 'sucesso' | 'erro' | 'info' | 'aviso'
         tipo: {
@@ -33,13 +29,10 @@ export default {
         },
     },
 
-    // $emit avisa o componente pai que algo aconteceu.
-    // O pai decide o que fazer — aqui ele vai limpar a mensagem.
     emits: ['fechar'],
 
     data() {
         return {
-            // cada tipo tem um emoji de ícone associado
             icones: {
                 sucesso: '✅',
                 erro:    '❌',

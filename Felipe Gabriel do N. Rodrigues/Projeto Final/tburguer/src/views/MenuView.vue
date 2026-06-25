@@ -1,7 +1,7 @@
 <template>
     <div class="menu-wrapper">
 
-        <!-- Alerta informativo enquanto os cafés carregam -->
+        <!-- Alerta informativo(azul) enquanto as opções de cafés carregam. -->
         <alert-component tipo="info" :mensagem="alertaCarregando" :flutuante="true" @fechar="alertaCarregando = ''" />
 
         <h1 class="menu-titulo">Menu</h1>
@@ -39,7 +39,6 @@ export default {
             const response = await fetch(`${this.$apiUrl}/menu`);
             const dados = await response.json();
             this.listaMenuCafe = dados.cafe;
-            // Carregou — limpa o alerta informativo
             this.alertaCarregando = '';
         },
         selecionarCafe(cafeSelecionado) {
@@ -66,7 +65,6 @@ export default {
     color: #f0f0f0;
 }
 
-/* Scroll suave com GPU — elimina o lag */
 .scroll-container {
     display: flex;
     flex-direction: row;
@@ -75,9 +73,7 @@ export default {
     padding: 12px 4px 20px;
     scroll-behavior: smooth;
     -webkit-overflow-scrolling: touch;
-    /* scroll inercial no iOS */
     will-change: scroll-position;
-    /* avisa o browser pra preparar a GPU */
     scrollbar-width: auto;
     scrollbar-color: rgb(0, 214, 71) #e0e0e0;
 }
@@ -100,7 +96,6 @@ export default {
     background: rgb(0, 160, 67);
 }
 
-/* Card */
 .cafe-card {
     flex: 0 0 260px;
     border-radius: 16px;
@@ -119,7 +114,6 @@ export default {
     border-color: rgb(0, 160, 67);
 }
 
-/* Imagem centralizada e bem enquadrada */
 .cafe-imagem-wrapper {
     position: relative;
     width: 100%;
@@ -132,12 +126,10 @@ export default {
     width: 100%;
     height: 100%;
     object-fit: contain;
-    /* mostra a imagem inteira sem cortar */
     object-position: center;
     display: block;
     transition: transform 0.4s ease;
     padding: 8px;
-    /* pequeno respiro nas bordas */
     box-sizing: border-box;
 }
 
@@ -158,7 +150,6 @@ export default {
     letter-spacing: 0.5px;
 }
 
-/* Conteúdo do card */
 .cafe-info {
     padding: 16px;
     display: flex;
