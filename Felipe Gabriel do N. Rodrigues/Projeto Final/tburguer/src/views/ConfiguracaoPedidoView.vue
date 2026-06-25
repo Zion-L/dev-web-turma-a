@@ -1,7 +1,7 @@
 <template>
   <div>
     <h1>Configuração dos Pedidos</h1>
-    <pedido-component-vue :burguer="hamburguerSelecionado"/>
+    <pedido-component-vue :cafe="cafeSelecionado"/>
   </div>
 </template>
 
@@ -16,17 +16,22 @@ export default {
   },
   data() {
     return {
-      hamburguerSelecionado : null,
+      cafeSelecionado : null,
     };
   },
   mounted () {
     const query = this.$route.query;
-    if(query.burguer) {
-      const decodeBurguer = JSON.parse(decodeURIComponent(query.burguer));
-      this.hamburguerSelecionado = decodeBurguer;
+    if(query.cafe) {
+      const decodeBurguer = JSON.parse(decodeURIComponent(query.cafe));
+      this.cafeSelecionado = decodeBurguer;
     }
   },
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+h1 {
+  margin-top: 40px;
+  color: #f0f0f0;
+}
+</style>

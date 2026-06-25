@@ -1,72 +1,67 @@
 <template>
   <div>
     <nav id="nav">
-      <router-link
-        id="logo-url"
-        to="/"
-      >
+      <router-link id="logo-url" to="/">
+        <!-- Trocamos o src de um arquivo local para uma URL externa, igual ao banner -->
         <img
           id="logo"
-          src="/img/logo_tburguer.png"
-        >
+          src="https://images.pexels.com/photos/35710835/pexels-photo-35710835.jpeg"
+          alt="Logo Cafézinho Selocura"
+        />
       </router-link>
-      <router-link to="/">
-        Home
-      </router-link> |
-      <router-link to="/menu">
-        Menu
-      </router-link> |
-      <router-link to="/pedidos">
-        Pedidos
-      </router-link> |
+      <router-link to="/">Início</router-link> 
+      <router-link to="/menu">Menu de Opções</router-link> 
+      <router-link to="/pedidos">Pedidos</router-link> 
     </nav>
   </div>
 </template>
 
 <script>
-    export default {
-        name: 'NavBarComponent',
-    }
+export default {
+  name: 'NavBarComponent',
+}
 </script>
 
 <style scoped>
-
 #logo {
-    width: 60px;
-    height: 60px;
-    }
+  width: 60px;
+  height: 60px;
+  object-fit: cover;       /* garante que a foto do café preencha o círculo sem distorcer */
+  border-radius: 50%;      /* transforma a imagem em círculo */
+  border: 2px solid rgb(0, 214, 71);
+}
 
 #logo:hover {
-    width: 70px;
-    height: 70px;
-    rotate: 360deg;
-    transition: 0.5s;
+  width: 70px;
+  height: 70px;
+  rotate: 360deg;
+  transition: 0.5s;
 }
 
 #nav #logo-url {
-    margin: auto;
-    margin-left: 0;
+  margin: auto;
+  margin-left: 0;
 }
 
 #nav {
-    background-color: #333;
-    border-bottom: darkgoldenrod 4px solid;
-    padding: 15px 50px;
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
+  background-color: #1a1a1a;
+  border-bottom: rgb(0, 214, 71) 4px solid;
+  padding: 15px 50px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
 }
 
-#nav a{
-    color: darkgoldenrod;
-    text-decoration: none;
-    margin-left:20px;
-    font-size: 18px;
+#nav a {
+  color: rgb(0, 214, 71);
+  text-decoration: none;
+  margin-left: 20px;
+  font-size: 18px;
 }
 
 #nav a:hover {
-    color:white;
-    font-size:22px;
-    transition: 0.5s;
+  color: white;
+  font-size: 22px;
+  transition: 0.5s;
 }
 </style>

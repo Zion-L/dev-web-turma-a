@@ -1,6 +1,6 @@
 <template>
   <div id="main-banner">
-    <h1>Hamburguer de churrasqueiro</h1>
+    <h1>Cafézinho Selocura</h1>
   </div>
 </template>
 
@@ -15,7 +15,7 @@ export default {
 <style scoped>
 
 #main-banner {
-    background-image: url("/public/img/banner.jpeg");
+    background-image: url("https://images.pexels.com/photos/34287070/pexels-photo-34287070.jpeg");
     height: 300px;
     background-position: 0;
     background-size:cover;
@@ -27,8 +27,8 @@ export default {
 
 #main-banner h1{
     font-size: 40px;
-    color:antiquewhite;
-    background: #333;
+    color: #fff;
+    background: rgba(0, 160, 67, 0.85);
     padding: 25px;
     border-radius: 100px 0px 0px 100px;
 }
