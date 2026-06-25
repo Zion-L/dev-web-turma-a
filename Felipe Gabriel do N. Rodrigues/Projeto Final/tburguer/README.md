@@ -8,11 +8,9 @@ Sistema de  cafeteria , feita com **Vue 3** e **JSON Server**. O usuário pode n
 
 | | |
 |---|---|
-| 🔗 **Link de Produção** | [cafezinho-selocura.vercel.app](https://cafezinho-selocura.vercel.app) |
-| 📦 **Repositório** | [github.com/seuusuario/tburguer](https://github.com/seuusuario/tburguer) |
-| 🗄️ **API (JSON Server)** | [api-tburguer.onrender.com](https://api-tburguer.onrender.com) |
-
-> Substitua os links acima pelos seus links reais antes de entregar.
+| 🔗 **Link de Produção** | [https://dev-web-turma-a-five.vercel.app/] |
+| 📦 **Repositório** | [https://github.com/Kyon-S2/dev-web-turma-a/tree/main/Felipe%20Gabriel%20do%20N.%20Rodrigues/Projeto%20Final/tburguer] |
+| 🗄️ **API (JSON Server)** | [https://api-cafeselocura.onrender.com] |
 
 ---
 

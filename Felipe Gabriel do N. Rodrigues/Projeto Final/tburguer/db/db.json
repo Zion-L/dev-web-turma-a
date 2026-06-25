@@ -43,7 +43,82 @@
       "descricao": "Pedido realizado"
     }
   ],
-  "pedidos": [],
+  "pedidos": [
+    {
+      "nome": "Lucão",
+      "tamanhoCafe": {
+        "id": 1,
+        "descricao": "Defensor 100ml"
+      },
+      "bebidas": [
+        {
+          "id": 2,
+          "nome": "Coca-cola garrafinha 310 ml",
+          "descricao": "Uma coquinha geladinha pra você que gosta de algo bom e gostoso.",
+          "foto": "https://images.pexels.com/photos/29051732/pexels-photo-29051732.jpeg",
+          "valor": 5,
+          "eh_novidade": false
+        }
+      ],
+      "complemento": [
+        {
+          "id": 1,
+          "nome": "Pão de Queijo",
+          "descricao": "Um pão de queijo delicioso para acompanhar o seu fefézinho delicioso.",
+          "foto": "https://images.pexels.com/photos/1251206/pexels-photo-1251206.jpeg",
+          "valor": 5,
+          "eh_novidade": true
+        }
+      ],
+      "cafe": {
+        "id": 2,
+        "nome": "Neymar",
+        "foto": "https://images.pexels.com/photos/23644647/pexels-photo-23644647.jpeg",
+        "descricao": "O café mais gostoso desse Brasil, com um sabor diferenciado puxado para um trufado de morango e com um gingado sensacional.",
+        "valor": 30,
+        "eh_novidade": true
+      },
+      "statusId": "4",
+      "id": 1
+    },
+    {
+      "nome": "Luquinhas",
+      "tamanhoCafe": {
+        "id": 2,
+        "descricao": "Meia 200ml"
+      },
+      "bebidas": [
+        {
+          "id": 3,
+          "nome": "Água gelada saborizada",
+          "descricao": "Água gelada de 500ml com um leve sabor para você que quer algo mais sofisticado.",
+          "foto": "https://images.pexels.com/photos/26596263/pexels-photo-26596263.jpeg",
+          "valor": 7,
+          "eh_novidade": false
+        }
+      ],
+      "complemento": [
+        {
+          "id": 1,
+          "nome": "Pão de Queijo",
+          "descricao": "Um pão de queijo delicioso para acompanhar o seu fefézinho delicioso.",
+          "foto": "https://images.pexels.com/photos/1251206/pexels-photo-1251206.jpeg",
+          "valor": 5,
+          "eh_novidade": true
+        }
+      ],
+      "cafe": {
+        "id": 2,
+        "nome": "Neymar",
+        "foto": "https://images.pexels.com/photos/23644647/pexels-photo-23644647.jpeg",
+        "descricao": "O café mais gostoso desse Brasil, com um sabor diferenciado puxado para um trufado de morango e com um gingado sensacional.",
+        "valor": 30,
+        "eh_novidade": true
+      },
+      "statusId": 5,
+      "id": 2
+    }
+  ],
   "opcionais": {
     "complemento": [
       {
