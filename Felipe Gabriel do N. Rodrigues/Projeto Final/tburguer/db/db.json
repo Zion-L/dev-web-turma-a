@@ -1,0 +1,236 @@
+{
+  "tamanhoCafe": [
+    {
+      "id": 1,
+      "descricao": "Defensor 100ml"
+    },
+    {
+      "id": 2,
+      "descricao": "Meia 200ml"
+    },
+    {
+      "id": 3,
+      "descricao": "Atacante 300 ml"
+    },
+    {
+      "id": 4,
+      "descricao": "Goleirão 500ml"
+    }
+  ],
+  "status_pedido": [
+    {
+      "id": 1,
+      "descricao": "Pedido em espera"
+    },
+    {
+      "id": 2,
+      "descricao": "Em produção"
+    },
+    {
+      "id": 3,
+      "descricao": "A caminho"
+    },
+    {
+      "id": 4,
+      "descricao": "Entregue"
+    },
+    {
+      "id": 5,
+      "descricao": "Pedido pendente"
+    },
+    {
+      "id": 6,
+      "descricao": "Pedido realizado"
+    }
+  ],
+  "pedidos": [
+    {
+      "nome": "Lucão",
+      "tamanhoCafe": {
+        "id": 1,
+        "descricao": "Defensor 100ml"
+      },
+      "bebidas": [
+        {
+          "id": 2,
+          "nome": "Coca-cola garrafinha 310 ml",
+          "descricao": "Uma coquinha geladinha pra você que gosta de algo bom e gostoso.",
+          "foto": "https://images.pexels.com/photos/29051732/pexels-photo-29051732.jpeg",
+          "valor": 5,
+          "eh_novidade": false
+        }
+      ],
+      "complemento": [
+        {
+          "id": 1,
+          "nome": "Pão de Queijo",
+          "descricao": "Um pão de queijo delicioso para acompanhar o seu fefézinho delicioso.",
+          "foto": "https://images.pexels.com/photos/1251206/pexels-photo-1251206.jpeg",
+          "valor": 5,
+          "eh_novidade": true
+        }
+      ],
+      "cafe": {
+        "id": 2,
+        "nome": "Neymar",
+        "foto": "https://images.pexels.com/photos/23644647/pexels-photo-23644647.jpeg",
+        "descricao": "O café mais gostoso desse Brasil, com um sabor diferenciado puxado para um trufado de morango e com um gingado sensacional.",
+        "valor": 30,
+        "eh_novidade": true
+      },
+      "statusId": "4",
+      "id": 1
+    },
+    {
+      "nome": "Luquinhas",
+      "tamanhoCafe": {
+        "id": 2,
+        "descricao": "Meia 200ml"
+      },
+      "bebidas": [
+        {
+          "id": 3,
+          "nome": "Água gelada saborizada",
+          "descricao": "Água gelada de 500ml com um leve sabor para você que quer algo mais sofisticado.",
+          "foto": "https://images.pexels.com/photos/26596263/pexels-photo-26596263.jpeg",
+          "valor": 7,
+          "eh_novidade": false
+        }
+      ],
+      "complemento": [
+        {
+          "id": 1,
+          "nome": "Pão de Queijo",
+          "descricao": "Um pão de queijo delicioso para acompanhar o seu fefézinho delicioso.",
+          "foto": "https://images.pexels.com/photos/1251206/pexels-photo-1251206.jpeg",
+          "valor": 5,
+          "eh_novidade": true
+        }
+      ],
+      "cafe": {
+        "id": 2,
+        "nome": "Neymar",
+        "foto": "https://images.pexels.com/photos/23644647/pexels-photo-23644647.jpeg",
+        "descricao": "O café mais gostoso desse Brasil, com um sabor diferenciado puxado para um trufado de morango e com um gingado sensacional.",
+        "valor": 30,
+        "eh_novidade": true
+      },
+      "statusId": 5,
+      "id": 2
+    }
+  ],
+  "opcionais": {
+    "complemento": [
+      {
+        "id": 1,
+        "nome": "Pão de Queijo",
+        "descricao": "Um pão de queijo delicioso para acompanhar o seu fefézinho delicioso.",
+        "foto": "https://images.pexels.com/photos/1251206/pexels-photo-1251206.jpeg",
+        "valor": 5,
+        "eh_novidade": true
+      },
+      {
+        "id": 2,
+        "nome": "Pão tradicional",
+        "descricao": "Um pão maravilhoso para você que quer um lanche tradicional.",
+        "foto": "https://images.pexels.com/photos/34366566/pexels-photo-34366566.jpeg",
+        "valor": 7,
+        "eh_novidade": false
+      }
+    ],
+    "bebidas": [
+      {
+        "id": 1,
+        "nome": "Água natural",
+        "descricao": "Água natural de 300ml para você que não quer algo muito gelado.",
+        "foto": "https://images.pexels.com/photos/14723657/pexels-photo-14723657.jpeg",
+        "valor": 0,
+        "eh_novidade": false
+      },
+      {
+        "id": 2,
+        "nome": "Coca-cola garrafinha 310 ml",
+        "descricao": "Uma coquinha geladinha pra você que gosta de algo bom e gostoso.",
+        "foto": "https://images.pexels.com/photos/29051732/pexels-photo-29051732.jpeg",
+        "valor": 5,
+        "eh_novidade": false
+      },
+      {
+        "id": 3,
+        "nome": "Água gelada saborizada",
+        "descricao": "Água gelada de 500ml com um leve sabor para você que quer algo mais sofisticado.",
+        "foto": "https://images.pexels.com/photos/26596263/pexels-photo-26596263.jpeg",
+        "valor": 7,
+        "eh_novidade": false
+      },
+      {
+        "id": 4,
+        "nome": "Suco de maracujá",
+        "descricao": "Um suco delicioso para você que está precisando relaxar.",
+        "foto": "https://images.pexels.com/photos/32751740/pexels-photo-32751740.jpeg",
+        "valor": 10,
+        "eh_novidade": false
+      }
+    ]
+  },
+  "menu": {
+    "cafe": [
+      {
+        "id": 1,
+        "nome": "Vinícius Jr.",
+        "foto": "https://images.pexels.com/photos/32180399/pexels-photo-32180399.jpeg",
+        "descricao": "Um café de tirar o fôlego, com um sabor adocicado e um gostinho de canela bem suave.",
+        "valor": 20,
+        "eh_novidade": true
+      },
+      {
+        "id": 2,
+        "nome": "Neymar",
+        "foto": "https://images.pexels.com/photos/23644647/pexels-photo-23644647.jpeg",
+        "descricao": "O café mais gostoso desse Brasil, com um sabor diferenciado puxado para um trufado de morango e com um gingado sensacional.",
+        "valor": 30,
+        "eh_novidade": true
+      },
+      {
+        "id": 3,
+        "nome": "Rapinha",
+        "foto": "https://images.pexels.com/photos/15987820/pexels-photo-15987820.jpeg",
+        "descricao": "Um café simples, mas com um sabor tradicional, perfeito pra que quer tomar um cafézinho.",
+        "valor": 10,
+        "eh_novidade": true
+      },
+      {
+        "id": 4,
+        "nome": "Endrick",
+        "foto": "https://images.pexels.com/photos/22222985/pexels-photo-22222985.jpeg",
+        "descricao": "Um café fora da curva, mesmo sendo deixado de lado, ele mostra o porque é o melhor, com um chantilli sensacional e um gosto saboroso, esse é o café que sempre pedem outra vez.",
+        "valor": 15,
+        "eh_novidade": true
+      },
+      {
+        "id": 5,
+        "nome": "Raian",
+        "foto": "https://images.pexels.com/photos/21926510/pexels-photo-21926510.jpeg",
+        "descricao": "Um café clássico, amado por muitos, odiado por poucos, esse é o café que todos voltam e pedem novamente.",
+        "valor": 12,
+        "eh_novidade": true
+      },
+      {
+        "id": 6,
+        "nome": "Lucas Paquetá",
+        "foto": "https://images.pexels.com/photos/16406503/pexels-photo-16406503.jpeg",
+        "descricao": "Um café que você toma e logo sente vontade de lançar a jogadinha, com uma mistura de sabores e um aroma espetacular.",
+        "valor": 20,
+        "eh_novidade": true
+      },
+      {
+        "id": 7,
+        "nome": "Danilo",
+        "foto": "https://images.pexels.com/photos/21854116/pexels-photo-21854116.jpeg",
+        "descricao": "Um café que subiu auto demais, com seu sabor inigualável, buscou sua quarta estrela michelan, esse é a escolha certa pra você que quer ser campeão.",
+        "valor": 15,
+        "eh_novidade": true
+      }
+    ]
+  }
+}
