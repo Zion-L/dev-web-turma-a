@@ -1,0 +1,518 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Álbum de Figurinhas - Seleções</title>
+
+    <!-- Vue 3 via CDN (sem build/Vite necessário) -->
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
+    <style>
+      :root {
+        --verde: #047857;
+        --verde-escuro: #064e3b;
+        --dourado: #f5b301;
+        --cinza: #f1f5f9;
+        --texto: #1e293b;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        font-family: "Segoe UI", system-ui, sans-serif;
+        background: var(--cinza);
+        color: var(--texto);
+        padding: 24px;
+      }
+      header {
+        text-align: center;
+        margin-bottom: 24px;
+      }
+      header h1 {
+        color: var(--verde-escuro);
+        margin: 0 0 4px;
+      }
+      header p {
+        margin: 0;
+        color: #475569;
+      }
+
+      .painel {
+        max-width: 1100px;
+        margin: 0 auto 24px;
+        background: #fff;
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+        display: flex;
+        flex-wrap: wrap;
+        gap: 16px;
+        align-items: flex-end;
+        justify-content: center;
+      }
+      .campo {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+      .campo label {
+        font-size: 0.8rem;
+        font-weight: 600;
+        color: #475569;
+      }
+      select,
+      input {
+        padding: 10px 12px;
+        border: 1px solid #cbd5e1;
+        border-radius: 8px;
+        font-size: 0.95rem;
+        min-width: 240px;
+      }
+
+      .aviso {
+        max-width: 1100px;
+        margin: 0 auto 24px;
+        background: #fef3c7;
+        border: 1px solid var(--dourado);
+        color: #92400e;
+        padding: 12px 16px;
+        border-radius: 10px;
+        text-align: center;
+      }
+      .erro {
+        max-width: 1100px;
+        margin: 0 auto 24px;
+        background: #fee2e2;
+        border: 1px solid #ef4444;
+        color: #991b1b;
+        padding: 12px 16px;
+        border-radius: 10px;
+        text-align: center;
+      }
+      .carregando {
+        text-align: center;
+        color: var(--verde);
+        font-weight: 600;
+        margin: 32px 0;
+      }
+
+      .selecao-info {
+        max-width: 1100px;
+        margin: 0 auto 16px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        justify-content: center;
+      }
+      .selecao-info img {
+        width: 40px;
+        height: 40px;
+        object-fit: contain;
+      }
+      .selecao-info h2 {
+        margin: 0;
+        color: var(--verde-escuro);
+      }
+
+      /* Barra de ferramentas: busca, contador e agrupamento */
+      .toolbar {
+        max-width: 1100px;
+        margin: 0 auto 18px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        align-items: center;
+        justify-content: space-between;
+      }
+      .toolbar .busca {
+        flex: 1;
+        min-width: 220px;
+      }
+      .contador {
+        background: var(--verde);
+        color: #fff;
+        font-weight: 700;
+        padding: 8px 16px;
+        border-radius: 20px;
+        white-space: nowrap;
+      }
+      .btn-agrupar {
+        padding: 9px 16px;
+        border: 1px solid var(--verde);
+        background: #fff;
+        color: var(--verde);
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: 600;
+        font-size: 0.9rem;
+        transition: 0.2s;
+      }
+      .btn-agrupar.ativo {
+        background: var(--verde);
+        color: #fff;
+      }
+
+      .grupo-titulo {
+        max-width: 1100px;
+        margin: 24px auto 8px;
+        color: var(--verde-escuro);
+        border-bottom: 2px solid var(--dourado);
+        padding-bottom: 6px;
+        font-size: 1.1rem;
+      }
+
+      /* GRID RESPONSIVO DE CARDS (figurinhas) */
+      .album {
+        max-width: 1100px;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+        gap: 18px;
+      }
+      .card {
+        background: #fff;
+        border-radius: 14px;
+        overflow: hidden;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        transition: transform 0.2s, box-shadow 0.2s;
+        border-top: 5px solid var(--verde);
+      }
+      .card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 8px 18px rgba(0, 0, 0, 0.18);
+      }
+      .card .foto {
+        background: linear-gradient(160deg, var(--verde) 0%, var(--verde-escuro) 100%);
+        padding: 16px 0 8px;
+      }
+      .card .foto img {
+        width: 110px;
+        height: 110px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 4px solid #fff;
+        background: #fff;
+      }
+      .card .numero {
+        display: inline-block;
+        margin-top: 8px;
+        background: var(--dourado);
+        color: var(--verde-escuro);
+        font-weight: 700;
+        border-radius: 20px;
+        padding: 2px 12px;
+        font-size: 0.8rem;
+      }
+      .card .info {
+        padding: 12px 10px 16px;
+      }
+      .card .nome {
+        font-weight: 700;
+        font-size: 0.95rem;
+        margin-bottom: 4px;
+      }
+      .card .posicao {
+        font-size: 0.8rem;
+        color: #64748b;
+      }
+      .vazio {
+        max-width: 1100px;
+        margin: 40px auto;
+        text-align: center;
+        color: #94a3b8;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app">
+      <header>
+        <h1>⚽ Álbum de Figurinhas</h1>
+        <p>Seleções de futebol — dados via API-Football</p>
+      </header>
+
+      <!-- Campo opcional para colar a chave sem editar o código -->
+      <div class="painel">
+        <div class="campo">
+          <label for="chave">Chave da API (x-apisports-key)</label>
+          <input
+            id="chave"
+            type="password"
+            v-model="apiKey"
+            placeholder="Cole aqui a sua API key"
+          />
+        </div>
+
+        <div class="campo">
+          <label for="pais">Selecione um país</label>
+          <!-- 1) Dropdown dinâmico: opções vêm da API (v-for) -->
+          <!-- 2) @change dispara o encadeamento das requisições -->
+          <select id="pais" v-model="paisSelecionado" @change="carregarFigurinhas">
+            <option value="" disabled>-- escolha uma seleção --</option>
+            <option
+              v-for="pais in paises"
+              :key="pais.code || pais.name"
+              :value="pais.name"
+            >
+              {{ pais.name }}
+            </option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Avisos / erros -->
+      <div class="aviso" v-if="!apiKey || apiKey === PLACEHOLDER">
+        ⚠️ Informe a sua chave pessoal da API-Football para carregar os dados.
+      </div>
+      <div class="erro" v-if="erro">{{ erro }}</div>
+
+      <!-- Estado de carregamento -->
+      <div class="carregando" v-if="carregando">Carregando figurinhas...</div>
+
+      <!-- Cabeçalho da seleção atual -->
+      <div class="selecao-info" v-if="time && !carregando">
+        <img v-if="time.logo" :src="time.logo" :alt="time.name" />
+        <h2>{{ time.name }}</h2>
+      </div>
+
+      <!-- Barra de ferramentas: busca + contador + agrupar -->
+      <div class="toolbar" v-if="jogadores.length && !carregando">
+        <input
+          class="busca"
+          type="text"
+          v-model="busca"
+          placeholder="🔍 Buscar jogador pelo nome..."
+        />
+        <span class="contador">
+          {{ jogadoresFiltrados.length }} de {{ totalFigurinhas }} figurinhas
+        </span>
+        <button
+          class="btn-agrupar"
+          :class="{ ativo: agrupar }"
+          @click="agrupar = !agrupar"
+        >
+          {{ agrupar ? "✓ Agrupado por posição" : "Agrupar por posição" }}
+        </button>
+      </div>
+
+      <!-- VISÃO AGRUPADA POR POSIÇÃO -->
+      <template v-if="agrupar && jogadoresFiltrados.length && !carregando">
+        <template v-for="grupo in jogadoresAgrupados" :key="grupo.posicao">
+          <h3 class="grupo-titulo" v-if="grupo.jogadores.length">
+            {{ grupo.posicao }} ({{ grupo.jogadores.length }})
+          </h3>
+          <div class="album" v-if="grupo.jogadores.length">
+            <div class="card" v-for="jogador in grupo.jogadores" :key="jogador.id">
+              <div class="foto">
+                <img :src="jogador.photo" :alt="jogador.name" @error="fotoFallback" />
+                <div class="numero" v-if="jogador.number">#{{ jogador.number }}</div>
+              </div>
+              <div class="info">
+                <div class="nome">{{ jogador.name }}</div>
+                <div class="posicao">{{ traduzirPosicao(jogador.position) }}</div>
+              </div>
+            </div>
+          </div>
+        </template>
+      </template>
+
+      <!-- VISÃO EM LISTA ÚNICA (padrão) -->
+      <div
+        class="album"
+        v-if="!agrupar && jogadoresFiltrados.length && !carregando"
+      >
+        <div class="card" v-for="jogador in jogadoresFiltrados" :key="jogador.id">
+          <div class="foto">
+            <img :src="jogador.photo" :alt="jogador.name" @error="fotoFallback" />
+            <div class="numero" v-if="jogador.number">#{{ jogador.number }}</div>
+          </div>
+          <div class="info">
+            <div class="nome">{{ jogador.name }}</div>
+            <div class="posicao">{{ traduzirPosicao(jogador.position) }}</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Estados vazios -->
+      <div
+        class="vazio"
+        v-if="jogadores.length && !jogadoresFiltrados.length && !carregando"
+      >
+        Nenhum jogador encontrado para "{{ busca }}".
+      </div>
+      <div
+        class="vazio"
+        v-if="paisSelecionado && !jogadores.length && !carregando && !erro"
+      >
+        Nenhum jogador encontrado para esta seleção.
+      </div>
+    </div>
+
+    <script>
+      const { createApp } = Vue;
+
+      // ====== CONFIGURAÇÃO ======
+      // Deixe como está e cole a chave no campo da tela.
+      // NÃO coloque sua chave real aqui se for subir para o GitHub público!
+      const API_KEY = "A_SUA_API_KEY_AQUI";
+      const BASE_URL = "https://v3.football.api-sports.io";
+
+      // Ordem das posições na visão agrupada
+      const ORDEM_POSICOES = [
+        { en: "Goalkeeper", pt: "Goleiros" },
+        { en: "Defender", pt: "Defensores" },
+        { en: "Midfielder", pt: "Meio-campistas" },
+        { en: "Attacker", pt: "Atacantes" },
+      ];
+
+      createApp({
+        data() {
+          return {
+            PLACEHOLDER: "A_SUA_API_KEY_AQUI",
+            apiKey: API_KEY,
+            paises: [],
+            paisSelecionado: "",
+            time: null,
+            jogadores: [],
+            carregando: false,
+            erro: "",
+            busca: "",
+            agrupar: false,
+          };
+        },
+
+        async mounted() {
+          await this.carregarPaises();
+        },
+
+        computed: {
+          // Total de figurinhas da seleção atual
+          totalFigurinhas() {
+            return this.jogadores.length;
+          },
+
+          // Filtra os jogadores pelo texto da busca (por nome)
+          jogadoresFiltrados() {
+            const termo = this.busca.trim().toLowerCase();
+            if (!termo) return this.jogadores;
+            return this.jogadores.filter((j) =>
+              (j.name || "").toLowerCase().includes(termo)
+            );
+          },
+
+          // Agrupa os jogadores filtrados por posição, em ordem fixa
+          jogadoresAgrupados() {
+            return ORDEM_POSICOES.map((pos) => ({
+              posicao: pos.pt,
+              jogadores: this.jogadoresFiltrados.filter(
+                (j) => j.position === pos.en
+              ),
+            }));
+          },
+        },
+
+        methods: {
+          headers() {
+            return { "x-apisports-key": this.apiKey };
+          },
+
+          // ETAPA 1 — Carregar países para o dropdown
+          async carregarPaises() {
+            if (!this.apiKey || this.apiKey === this.PLACEHOLDER) return;
+            this.erro = "";
+            try {
+              const resp = await fetch(`${BASE_URL}/teams/countries`, {
+                method: "GET",
+                headers: this.headers(),
+              });
+              const dados = await resp.json();
+
+              if (dados.errors && Object.keys(dados.errors).length) {
+                this.erro = "Erro da API: " + JSON.stringify(dados.errors);
+                return;
+              }
+              this.paises = (dados.response || []).sort((a, b) =>
+                a.name.localeCompare(b.name)
+              );
+            } catch (e) {
+              this.erro = "Falha ao obter lista de países: " + e.message;
+            }
+          },
+
+          // ETAPAS 2 e 3 — Encadeadas: descobrir ID e buscar o elenco
+          async carregarFigurinhas() {
+            if (!this.paisSelecionado) return;
+            this.carregando = true;
+            this.erro = "";
+            this.jogadores = [];
+            this.time = null;
+            this.busca = "";
+
+            try {
+              // 2) Descobrir o ID numérico da seleção pelo nome
+              const respTime = await fetch(
+                `${BASE_URL}/teams?name=${encodeURIComponent(this.paisSelecionado)}`,
+                { method: "GET", headers: this.headers() }
+              );
+              const dadosTime = await respTime.json();
+
+              if (!dadosTime.response || dadosTime.response.length === 0) {
+                this.erro = `Não foi encontrada uma seleção para "${this.paisSelecionado}".`;
+                return;
+              }
+
+              this.time = dadosTime.response[0].team;
+              const teamId = this.time.id;
+
+              // 3) Usar o ID para buscar o plantel (figurinhas)
+              const respElenco = await fetch(
+                `${BASE_URL}/players/squads?team=${teamId}`,
+                { method: "GET", headers: this.headers() }
+              );
+              const dadosElenco = await respElenco.json();
+
+              if (!dadosElenco.response || dadosElenco.response.length === 0) {
+                this.erro = "Elenco não disponível para esta seleção.";
+                return;
+              }
+
+              this.jogadores = dadosElenco.response[0].players || [];
+            } catch (e) {
+              this.erro = "Erro ao processar o fluxo assíncrono: " + e.message;
+            } finally {
+              this.carregando = false;
+            }
+          },
+
+          traduzirPosicao(pos) {
+            const mapa = {
+              Goalkeeper: "Goleiro",
+              Defender: "Defensor",
+              Midfielder: "Meio-campista",
+              Attacker: "Atacante",
+            };
+            return mapa[pos] || pos || "—";
+          },
+
+          fotoFallback(evento) {
+            evento.target.src =
+              "data:image/svg+xml;utf8," +
+              encodeURIComponent(
+                '<svg xmlns="http://www.w3.org/2000/svg" width="110" height="110"><rect width="110" height="110" fill="#e2e8f0"/><text x="55" y="62" font-size="40" text-anchor="middle" fill="#94a3b8">?</text></svg>'
+              );
+          },
+        },
+
+        watch: {
+          apiKey(novaChave) {
+            if (novaChave && novaChave !== this.PLACEHOLDER && !this.paises.length) {
+              this.carregarPaises();
+            }
+          },
+        },
+      }).mount("#app");
+    </script>
+  </body>
+</html>
