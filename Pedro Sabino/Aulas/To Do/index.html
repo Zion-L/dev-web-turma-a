@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="script.js"></script>
+    <style>
+        body{
+            font-family: "Gill Sans";
+            background: #cdcdcd;
+            padding: 16px;
+        }
+        h1{
+            color:rgb(2, 92, 95);
+            text-align: center;
+        }
+        .input-area{
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        #tarefaInput{
+            padding: 8px;
+            width: 150px;
+            border-radius: 5px;
+        }
+        #btnAdicionar{
+            padding: 8px 12px;
+            margin-left: 5px;
+            color:rgb(2, 92, 95);
+            background-color: aquamarine;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        #btnAdicionar:hover{
+            color:aquamarine;
+            background-color: rgb(2, 92, 95);
+            transition: 0.2s;
+        }
+        ul{
+            padding: 0px;
+            margin-left: 28px;
+        }
+        li{
+            background:#fff;
+            align-items:center;
+            margin: 16px 16px;
+            padding: 10px;
+            border-radius: 6px;
+            display: flex;
+            justify-content: space-between;
+
+        }
+        .fechar{
+            background-color: darkred;
+            border-radius: 100px;
+        }
+        li.cocluida{
+            text-decoration: line-through;
+            color: gray;
+        }
+    </style>
+</head>
+<body>
+    <h1>Minha Lista de Tarefas</h1>
+    <div class="input-area">
+        <input type="text" id="tarefaInput" placeholder="Digite sua Tarefa!">
+        <button id="btnAdicionar">+</button>
+    </div>
+
+    <ul id="listaTarefas">
+        
+    </ul>
+</body>
+</html>
